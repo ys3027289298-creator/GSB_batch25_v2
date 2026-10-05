@@ -1,0 +1,40 @@
+new
+tick
+pause
+tick
+resume
+add a
+add b
+add c
+add a
+slot
+slot
+slot
+queue t1
+queue t2
+run
+run
+run
+spin
+pause
+spin
+resume
+dispatch
+dispatch
+alloc
+alloc
+alloc
+transfer
+transfer
+view
+view
+save
+tick
+tick
+save
+load 1
+status
+save
+reset
+status
+quit
