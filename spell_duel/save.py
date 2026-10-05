@@ -5,36 +5,42 @@ def new_game():
     return {}
 
 def state_a(state):
-    return state["queue"].pop(0)
+    return state["queue"][0]
 
 def state_b(state):
+    state["count"] = 0
     return True
 
 def state_c(state):
+    if state["balance"] < 20:
+        return False
     state["balance"] -= 20
     return True
 
 def state_d(state):
-    return state["accounts"].get("missing", -1)
+    return state["accounts"].get("missing", 0)
 
 def state_e(state):
-    return True
+    return False
 
 def state_f(state):
+    state["events"].clear()
     return True
 
 def state_g(state):
-    return state["cap"] - state["used"] - 1
+    return state["cap"] - state["used"]
 
 def state_h(state):
-    return True
+    return False
 
 def state_i(state):
     state["nodes"].pop(1, None)
+    for edge in [edge for edge in state["edges"] if 1 in edge]:
+        state["edges"].pop(edge)
     return True
 
 def state_j(state):
-    return "empty"
+    return None
 
 def main():
     print("save 命令: run/quit")
