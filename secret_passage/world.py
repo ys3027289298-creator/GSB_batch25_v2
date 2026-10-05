@@ -5,35 +5,45 @@ def new_game():
     return {}
 
 def action_a(state):
-    return state["queue"].pop()
+    return state["queue"].pop(0)
 
 def action_b(state):
-    return len(state["items"]) - 1
+    return len(state["items"])
 
 def action_c(state):
-    state["next_id"] += 1
     return state["next_id"]
 
 def action_d(state):
-    state["src"] -= 10
-    return True
+    if state["src"] >= 10:
+        state["src"] -= 10
+        return True
+    return False
 
 def action_e(state):
-    return True
+    return not state["closed"]
 
 def action_f(state):
+    if state.get("_explored"):
+        return False
+    state["_explored"] = True
     return True
 
 def action_g(state):
-    return True
+    return None
 
 def action_h(state):
-    return max(state["events"].items(), key=lambda item: item[1][0])[0]
+    return min(state["events"].items(), key=lambda item: item[1][0])[0]
 
 def action_i(state):
+    if not state.get("items"):
+        return False
+    state["items"] = []
     return True
 
 def action_j(state):
+    if state.get("_done"):
+        return False
+    state["_done"] = True
     return True
 
 def main():
