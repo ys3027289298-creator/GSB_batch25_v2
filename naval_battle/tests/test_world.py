@@ -61,3 +61,42 @@ class TestWorld(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+import copy
+
+
+class TestRollbackAndReplay(unittest.TestCase):
+    def test_failure_rollback(self):
+        state = world.new_game()
+        before = copy.deepcopy(state)
+        self.assertFalse(world.action_b(state))
+        self.assertFalse(world.action_d(state))
+        state["paused"] = True
+        self.assertFalse(world.action_e(state))
+        state["closed"] = True
+        self.assertFalse(world.action_j(state))
+        state["paused"] = before["paused"]
+        state["closed"] = before["closed"]
+        self.assertEqual(state, before)
+        self.assertTrue(world.action_a(state))
+        ships_snapshot = copy.deepcopy(state["ships"])
+        self.assertFalse(world.action_a(state))
+        self.assertEqual(state["ships"], ships_snapshot)
+
+    def test_replay(self):
+        def run():
+            state = world.new_game()
+            world.action_a(state)
+            world.action_e(state)
+            world.action_d(state)
+            state["events"] = {1: (5, 6), 2: (1, 2)}
+            world.action_c(state)
+            world.action_i(state)
+            return state
+
+        first = run()
+        second = run()
+        self.assertEqual(first, second)
+        self.assertEqual(first["hits"], 0)
+        self.assertEqual(first["dst"], 0)
