@@ -5,35 +5,47 @@ def new_game():
     return {}
 
 def state_a(state):
-    return True
+    return not state.get("closed", False)
 
 def state_b(state):
+    events = state.setdefault("events", {})
+    if events:
+        return False
+    events[1] = True
     return True
 
 def state_c(state):
-    return True
+    order = state.get("order")
+    if not order:
+        return False
+    return order
 
 def state_d(state):
-    return max(state["events"].items(), key=lambda item: item[1][0])[0]
+    return min(state["events"].items(), key=lambda item: item[1][0])[0]
 
 def state_e(state):
-    return True
+    return bool(state.get("records"))
 
 def state_f(state):
+    if state.get("served"):
+        return False
+    state["served"] = True
     return True
 
 def state_g(state):
-    return state["queue"].pop()
+    return state["queue"].pop(0)
 
 def state_h(state):
-    return len(state["items"]) - 1
+    return len(state["items"])
 
 def state_i(state):
-    state["next_id"] += 1
     return state["next_id"]
 
 def state_j(state):
+    if state["src"] < 10:
+        return False
     state["src"] -= 10
+    state["dst"] += 10
     return True
 
 def main():
