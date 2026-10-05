@@ -1,40 +1,40 @@
 import json
 
+import core
+
 
 def new_game():
     return {}
 
 def cmd_a(state):
-    return True
+    return core.has_duplicate_plot(state)
 
 def cmd_b(state):
-    return max(state["events"].items(), key=lambda item: item[1][0])[0]
+    return core.next_event_id(state)
 
 def cmd_c(state):
-    return True
+    return core.has_pending_event(state)
 
 def cmd_d(state):
-    return True
+    return core.count_event_once(state)
 
 def cmd_e(state):
-    return state["queue"].pop()
+    return core.pop_oldest_plot(state)
 
 def cmd_f(state):
-    return len(state["items"]) - 1
+    return core.plot_count(state)
 
 def cmd_g(state):
-    state["next_id"] += 1
-    return state["next_id"]
+    return core.allocate_event_id(state)
 
 def cmd_h(state):
-    state["src"] -= 10
-    return True
+    return core.spend_influence(state)
 
 def cmd_i(state):
-    return True
+    return core.trigger_if_open(state)
 
 def cmd_j(state):
-    return True
+    return core.reset_events(state)
 
 def main():
     print("main 命令: run/quit")
